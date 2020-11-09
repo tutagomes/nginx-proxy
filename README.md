@@ -301,8 +301,11 @@ response is to clear your browser's HSTS cache.
 
 ### Basic Authentication Support
 
-In order to be able to secure your virtual host, you have to create a file named as its equivalent VIRTUAL_HOST variable on directory
-/etc/nginx/htpasswd/$VIRTUAL_HOST
+In order to be able to secure your virtual host, you have two options while creating the file the htpasswd file.
+1. Create a file with matching VIRTUAL_HOST name
+2. Create a file and pass it's name within the AUTH_FILENAME variable
+
+Both files must be created/mounted in /etc/nginx/htpasswd/$VIRTUAL_HOST or /etc/nginx/htpasswd/$AUTH_FILENAME
 
 ```
 $ docker run -d -p 80:80 -p 443:443 \
