@@ -198,6 +198,8 @@ upstream {{ $upstream_name }} {
 			{{ else }}
 				# Cannot connect to network of this container
 				server 127.0.0.1 down;
+				{{ $bodysize := coalesce $container.Env.VIRTUAL_BODY_SIZE "1MB" }}
+				client_max_body_size {{ $bodysize }};
 			{{ end }}
 		{{ end }}
 	{{ end }}
