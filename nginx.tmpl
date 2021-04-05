@@ -228,8 +228,8 @@ upstream {{ $upstream_name }} {
 {{/* Get the AUTH_FILENAME defined by containres, falling back to $host */}}
 {{ $auth_filename := or (first (groupByKeys $containers "Env.AUTH_FILENAME")) $host}}
 
-{{/* Get the MAX_BODY_SIZE defined by containres, falling back to 1MB */}}
-{{ $bodysize := or (first (groupByKeys $containers "Env.VIRTUAL_BODY_SIZE")) "1MB"}}
+{{/* Get the MAX_BODY_SIZE defined by containres, falling back to 1M */}}
+{{ $bodysize := or (first (groupByKeys $containers "Env.VIRTUAL_BODY_SIZE")) "1M"}}
 
 {{/* Get the first cert name defined by containers w/ the same vhost */}}
 {{ $certName := (first (groupByKeys $containers "Env.CERT_NAME")) }}
@@ -315,6 +315,7 @@ server {
 	{{ end }}
 
 	location / {
+		client_max_body_size {{ $bodysize }};
 		{{ if eq $proto "uwsgi" }}
 		include uwsgi_params;
 		uwsgi_pass {{ trim $proto }}://{{ trim $upstream_name }};
@@ -363,6 +364,7 @@ server {
 	{{ end }}
 
 	location / {
+		client_max_body_size {{ $bodysize }};
 		{{ if eq $proto "uwsgi" }}
 		include uwsgi_params;
 		uwsgi_pass {{ trim $proto }}://{{ trim $upstream_name }};
